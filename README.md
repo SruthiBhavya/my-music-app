@@ -6,19 +6,23 @@ This is a simple Spotify-like music application built using React and Zustand.
 
 ## Features
 
-Play / Pause songs
-Genre based song filtering
-Light & Dark theme toggle
-Global state management using Zustand
-Persistent state (last played song, selected genre)
-Responsive and clean UI
+- Play / Pause songs
+- Genre based song filtering
+- Light & Dark theme toggle
+- Global state management using Zustand
+- Persistent state (last played song, selected genre)
+- Responsive and clean UI
+
+---
 
 ## Tech Stack
 
-React (Vite)
-Zustand
-JavaScript
-CSS
+- React (Vite)
+- Zustand
+- JavaScript
+- CSS
+
+---
 
 ## Screenshots
 ### Home Page
