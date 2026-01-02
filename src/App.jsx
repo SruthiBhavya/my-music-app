@@ -1,41 +1,35 @@
-import { Routes, Route } from "react-router-dom";
-import { useState } from "react";
 import Discover from "./pages/Discover";
-import SongDetails from "./pages/SongDetails";
+import usePlayerStore from "./store/usePlayerStore";
 
 function App() {
-  const [dark, setDark] = useState(false);
+  const { theme, toggleTheme } = usePlayerStore();
 
-  const toggleBg = dark ? "#3a6fa0" : "#5a8fd0"; // soft blue
+  const appStyle = {
+    minHeight: "100vh",
+    width: "100%",
+    background:
+      theme === "dark"
+        ? "linear-gradient(to bottom, #0f172a, #020617)"
+        : "linear-gradient(to bottom, #ffffff, #f1f5f9)",
+    color: theme === "dark" ? "#ffffff" : "#0f172a",
+  };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundColor: dark ? "#121212" : "#ffffff",
-        color: dark ? "#ffffff" : "#000000",
-      }}
-    >
-      <button
-        onClick={() => setDark(!dark)}
-        style={{
-          margin: "10px",
-          padding: "5px 10px",
-          cursor: "pointer",
-          borderRadius: "8px",
-          border: "none",
-          backgroundColor: toggleBg,
-          color: "#fff",
-          fontWeight: "bold",
-        }}
-      >
-        {dark ? "Light Mode ☀️" : "Dark Mode 🌙"}
-      </button>
+    <div style={appStyle}>
+      {/* Theme Toggle */}
+      <div style={{ padding: "16px", textAlign: "right" }}>
+        <button
+          onClick={toggleTheme}
+          style={{
+            backgroundColor: theme === "dark" ? "#334155" : "#e2e8f0",
+            color: theme === "dark" ? "#fff" : "#000",
+          }}
+        >
+          {theme === "dark" ? "☀ Light" : "🌙 Dark"}
+        </button>
+      </div>
 
-      <Routes>
-        <Route path="/" element={<Discover dark={dark} />} />
-        <Route path="/song/:id" element={<SongDetails dark={dark} />} />
-      </Routes>
+      <Discover />
     </div>
   );
 }

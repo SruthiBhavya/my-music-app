@@ -1,60 +1,55 @@
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setActiveSong } from "../redux/playerSlice";
+import usePlayerStore from "../store/usePlayerStore";
 
-function SongCard({ id, title, artist, image, dark }) {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+function SongCard({ song }) {
+  const {
+    currentSongId,
+    isPlaying,
+    playSong,
+    pauseSong,
+    theme,
+  } = usePlayerStore();
 
-  const handlePlay = () => {
-    dispatch(setActiveSong({ id, title, artist, image }));
-  };
-
-  const cardBg = dark ? "#1f1f1f" : "#f8f8f8";
-  const textColor = dark ? "#fff" : "#000";
-  const artistColor = dark ? "#bbb" : "#555";
-  const buttonColor = "#3a9d3a"; // muted green
+  const isCurrent = currentSongId === song.id && isPlaying;
 
   return (
     <div
-      onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-      onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
       style={{
+        backgroundColor: theme === "dark" ? "#1e293b" : "#ffffff",
         borderRadius: "12px",
-        overflow: "hidden",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-        width: "200px",
-        cursor: "pointer",
-        transition: "transform 0.2s, box-shadow 0.2s",
-        display: "flex",
-        flexDirection: "column",
-        backgroundColor: cardBg,
-        color: textColor,
+        padding: "16px",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+        textAlign: "center",
       }}
     >
       <img
-        src={image}
-        alt={title}
-        style={{ width: "100%", height: "200px", objectFit: "cover" }}
-        onClick={() => navigate(`/song/${id}`)}
-      />
-      <div style={{ padding: "10px", flex: 1 }}>
-        <h3 style={{ margin: "5px 0", fontSize: "16px" }}>{title}</h3>
-        <p style={{ margin: 0, color: artistColor }}>{artist}</p>
-      </div>
-      <button
-        onClick={handlePlay}
+        src={song.image}
+        alt={song.title}
         style={{
-          border: "none",
-          backgroundColor: buttonColor,
-          color: "#fff",
-          padding: "8px",
           width: "100%",
-          cursor: "pointer",
-          fontWeight: "bold",
+          height: "160px",
+          objectFit: "cover",
+          borderRadius: "8px",
+        }}
+      />
+
+      <h3 style={{ margin: "10px 0", color: theme === "dark" ? "#fff" : "#000" }}>
+        {song.title}
+      </h3>
+
+      <p style={{ color: "#94a3b8" }}>{song.artist}</p>
+
+      <button
+        onClick={() =>
+          isCurrent ? pauseSong() : playSong(song.id)
+        }
+        style={{
+          marginTop: "10px",
+          width: "100%",
+          backgroundColor: "#6366f1",
+          color: "#fff",
         }}
       >
-        Play
+        {isCurrent ? "⏸ Pause" : "▶ Play"}
       </button>
     </div>
   );
